@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>   
+    <form id="setTime"> 
+        <h1 id="clock"></h1>
+        <p>start time</p>
+        <input name="writeTime" type="text" value="00:00:00"> 
+        <button type="button" onclick="setInterval(showClock, 1000) ">Start!</button>
+    </form>
+    <script>
+        function showClock(){
+            let setTimeForm = document.forms.setTime;
+            let stringValue = setTimeForm.elements.writeTime.value
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+             
+            let s = stringValue.slice(6, 8)
+            let m = stringValue.slice(3, 5)
+            let h = stringValue.slice(0, 2)
+
+            if(s == 60){
+                m = m + 1;
+            };
+
+            if(m == 60){
+                h = h + 1;
+            };
+
+            if(h == 24) {
+                h = '00';
+                m = '00';
+                s = '00';
+            }; 
+                console.log(h + ":" + m + ":" + s)    
+        }
+        
+        // function getCustomTime() {
+        // }
+    </script>
+</body>
+</html>

@@ -39,11 +39,11 @@
         function changeNextOrPreviousImage(step){
             currentImg += step;
 
-            if(currentImg > 4){
+            if(currentImg > photoArr.length){
                 currentImg = 0;
             }
             if(currentImg < 0){
-                currentImg = 4;
+                currentImg = photoArr.length;
             }           
             document.getElementById('skyscraper').setAttribute("src", photoArr[currentImg])
         }

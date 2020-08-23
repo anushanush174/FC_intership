@@ -1,42 +1,79 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>   
-    <form id="setTime"> 
-        <h1 id="clock"></h1>
-        <p>start time</p>
-        <input name="writeTime" type="text" value="00:00:00"> 
-        <button type="button" onclick="setInterval(showClock, 1000) ">Start!</button>
+<html> 
+    <head></head>
+    <body>
+    <form id="form">
+        <div style="width: 300px; float:left; text-align: center; height:300px; background:rgb(41, 175, 157); margin:200px"><h1><p>TIME</p></h1>
+            <h1><p id="curentTime"></p></h1>
+            <input name="start" value="00:00:00">Start time</input> <br> <br> <br>
+            <button type="button" onclick="changeCurentTime()">START</button>
+        </div>
+
+        <div class="setAlarm"style="width: 300px; float:right; text-align: center; height:300px; background:rgb(41, 175, 157); margin:200px"><h1><p>ALARM</p></h1>
+            <h1 id="timer"></h1>
+            <input id="name" value="Alarm">Name</input>
+            <br> <br>
+            <input id="alarmTime" value="00:00:00">Time</input>
+            <br> <br>
+            <button type="button" id="startStop" onclick="setAlarm()">CREATE</button> <br> <br>
+        </div>
     </form>
     <script>
-        function showClock(){
-            let setTimeForm = document.forms.setTime;
-            let stringValue = setTimeForm.elements.writeTime.value
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-             
-            let s = stringValue.slice(6, 8)
-            let m = stringValue.slice(3, 5)
-            let h = stringValue.slice(0, 2)
+        let timeInterval;
+        let miliseconds;
 
-            if(s == 60){
-                m = m + 1;
-            };
-
-            if(m == 60){
-                h = h + 1;
-            };
-
-            if(h == 24) {
-                h = '00';
-                m = '00';
-                s = '00';
-            }; 
-                console.log(h + ":" + m + ":" + s)    
+        function currentTime(){
+            document.getElementById("curentTime").innerText = new Date().toLocaleTimeString("en-us", {hourCycle: 'h23'});
         }
         
-        // function getCustomTime() {
-        // }
+        timeInterval = setInterval(currentTime, 1000);
+        
+        function changeCurentTime(){
+            clearInterval(timeInterval);
+            timeInterval = setInterval(setCustomDate, 1000);
+            miliseconds = getDateMiliseconds(document.forms.form.elements.start.value);
+        }
+
+        function setCustomDate(){
+            document.getElementById("curentTime").innerText = new Date(miliseconds).toLocaleTimeString("en-us", {hourCycle: 'h23'});
+            miliseconds += 1000;
+        }  
+
+        function getDateMiliseconds(timeStr){
+            let h = timeStr.slice(0, 2);
+            let m = timeStr.slice(3, 5);
+            let s = timeStr.slice(6, 8);
+
+            let changedTime = new Date()
+            changedTime.setHours(h, m, s)
+            return changedTime.getTime();
+        }
+
+        function setAlarm(){
+            if(document.forms.form.elements.name.value == "" && document.forms.form.elements.alarmTime.value == ""){
+                alert("Name and Time are required fields")
+            }else{
+                miliseconds = getDateMiliseconds(document.forms.form.elements.alarmTime.value) - new Date().getTime();
+                if(miliseconds > 0){
+                    let nameValue = document.forms.form.elements.name.value;
+                    timeInterval = setTimeout(
+                        function(){
+                            alert(`It's time to ${nameValue}`);
+                            
+                            document.getElementById("name").disabled = false;
+                            document.getElementById("alarmTime").disabled = false;
+                            document.getElementById("startStop").disabled = false;
+                        }, miliseconds);
+
+                    document.getElementById("name").disabled = true;
+                    document.getElementById("alarmTime").disabled = true;
+                    document.getElementById("startStop").disabled = true;
+                    document.forms.form.elements.name.value = "";
+                    document.forms.form.elements.alarmTime.value = "";
+                }else{
+                    alert("the time has already gone");
+                }
+            }
+        }
     </script>
 </body>
 </html>

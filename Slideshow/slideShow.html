@@ -2,17 +2,24 @@
     <head>
     </head>
     <body>
-        <div class = "SlideShow">
-            <img img id="skyscraper"  src="slideShowPhotos/img1.jpg" height="auto" width="100%" alt=""> 
+    
+        <div class = "SlideShow" style="text-align: center;">
+            <img img class="main" id="skyscraper" src="slideShowPhotos/img1.jpg" height="auto" width="50%" alt="">
             <br>
             <div id="imgList"></div>
             <br>
-            <button onclick="changeNextOrPreviousImage(-1)"><= Previous</button>
-            <button onclick="changeNextOrPreviousImage(1)">Next =></button>
+        </div>
+        <div class='buttons'>
+            <div style='float: left;'>
+                <button style="height: 90px; width: 90px; border-color: magenta;" onclick="changeNextOrPreviousImage(-1)"><= Previous</button>
+            </div>
+            <div style='float: right;'>
+                <button style="height: 90px; width: 90px; border-color: magenta;" onclick="changeNextOrPreviousImage(1)">Next =></button>
+            </div>
         </div>
     <script>
         let photoArr = [
-                        "slideShowPhotos/img1.jpg", 
+                        "slideShowPhotos/img1.jpg",
                         "slideShowPhotos/img2.jpg",
                         "slideShowPhotos/img3.jpg",
                         "slideShowPhotos/img4.jpg",
@@ -28,25 +35,31 @@
                 let imgElement = document.createElement("img");
                 imgElement.setAttribute("src", photoArr[i]);
                 imgElement.setAttribute("height", "150");
-                list.appendChild(imgElement);
+                imgElement.setAttribute("id", `selected${i}`);
+                imgElement.setAttribute("onclick", `selectedImg(${i})`)
+                 list.appendChild(imgElement);
             }
         }
 
+        function selectedImg(id){
+            document.getElementById('skyscraper').setAttribute("src", photoArr[id])
+        }
+
         let currentImg = 0;
-        
-        setInterval(changeNextOrPreviousImage, 3000, 1);
 
         function changeNextOrPreviousImage(step){
             currentImg += step;
 
-            if(currentImg > photoArr.length){
+            if(currentImg > photoArr.length - 1){
                 currentImg = 0;
             }
             if(currentImg < 0){
-                currentImg = photoArr.length;
+                currentImg = photoArr.length - 1;
             }           
             document.getElementById('skyscraper').setAttribute("src", photoArr[currentImg])
         }
+
+        setInterval(changeNextOrPreviousImage, 3000, 1);
     </script>
-    </body>     
+    </body>
 </html> 

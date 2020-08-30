@@ -12,7 +12,7 @@ class UserInfo extends UserLogin{
     }
 }
 
-const passwordlength = 6;
+const passwordLength = 6;
 
 function userInfoToLocalStorage(){ 
     const currentUser = new UserInfo(document.getElementById('registerName').value,
@@ -28,6 +28,8 @@ function userInfoToLocalStorage(){
     }
 
     localStorage.setItem("curUser", JSON.stringify(users))
+
+    alert("Successfully Registrated")
 }
 
 function registerButtonClick(){
@@ -37,8 +39,8 @@ function registerButtonClick(){
     const rePassword = document.getElementById("confirmPassw").value
 
     if(userName.length > 0 && userEmail.length > 0){
-        if(password.length < passwordlength || rePassword.length < passwordlength ){
-            alert("Minimum Password Symbols Must Be 6!");
+        if(password.length < passwordLength || rePassword.length < passwordLength ){
+            alert(`Password must be greater than ${passwordLength} !`);
         }else{
             if(password !== rePassword){
                 alert("Incorrect password!");
@@ -47,11 +49,9 @@ function registerButtonClick(){
 
                 if(users){
                     const emailValue = users.find(x => x.email === userEmail)
-                    console.log(emailValue)
                     if(emailValue !== undefined) {
                         alert("The user with such Email already exists")
                     }else{
-                        console.log(emailValue)
                         userInfoToLocalStorage()
                     }
                 }else{
@@ -60,7 +60,7 @@ function registerButtonClick(){
             }
         }
     }else{
-        alert("Name or email fildes can't be empty")
+        alert("All Fields are Required")
     }
 }
 
@@ -69,13 +69,13 @@ function loginButtonClick(){
     const logName = document.getElementById("loginName").value;
     const logPass = document.getElementById("loginPasswprd").value;
 
-    if(logName == "" || (logPass.length < passwordlength)){
+    if(logName == "" || (logPass.length < passwordLength)){
         alert("Fields are Incorrect")
     }else{
         let users = JSON.parse(localStorage.getItem('curUser'));
         if(users){
             if((users.find(x => x.name === logName) || users.find(x => x.email === logName)) && users.find(x => x.password === logPass)){
-                alert("Successfully Logged In")
+                location.href = "homePage.html"
             }else{
                 alert('Wrong Password or UserName')
             }

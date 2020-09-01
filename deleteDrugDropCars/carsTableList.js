@@ -9,7 +9,6 @@ const carModel = [
 carModel.push("Delete")
 let body = document.getElementsByTagName('body')[0];
 let div = document.createElement('div')
-div.setAttribute("id", "elem")
 let divPagination = document.createElement('div');
 body.appendChild(div);
 body.appendChild(divPagination);
@@ -28,6 +27,10 @@ function createTable(cars) {
     for(let i = 0; i < carModel.length; i++){
         let th = document.createElement('th')
         th.setAttribute("draggable", "true")
+        th.setAttribute('ondragover', 'onDragOver(event)')
+        th.setAttribute('ondrop', 'onDrop(event)')
+        th.setAttribute('ondragstart', 'onDragStart(' + i + ', event)')
+        th.setAttribute("id", `elem${i}`)
         th.innerText = (carModel[i]);
         title.appendChild(th);
     }
@@ -99,19 +102,41 @@ function deleteRows(){
             }
         }
     }
-}ß
+}
 
-// function dragDrop () {
-//     let dragArr = [];
-//     for(i = 0; i < cars.length; i++){
-//         dragArr.push(cars[i].Model)
-//     }
+// const carModel = [
+//     "Model",
+//     "Brand",
+//     "Date",
+//     "Horsepower",
+//     "Transmission",
+//     "Class",
+// ];
 
-//     let elem = document.querySelector("#elem");
+let currentIndex;
+function onDragStart(index, event) {
+    event.dataTransfer.setData('index', index);   // event.target.id dtanuma en elementi id vory vory eventy arela
+}
 
-//     elem.addEventListener("dragend", function() {
-//         dragArr
-//     })
 
-// }
-// dragDrop () 
+function onDragOver(index){
+    event.preventDefault();
+  //  console.log(index.dataTransfer.setData("text"))
+}
+
+
+
+function onDrop(){
+    let data = event.dataTransfer.getData("index")
+    
+    console.log(data)
+    console.log(event)
+
+}
+
+//event.target.className.split("/\s")
+
+    // let dragArr = [];
+    // for(i = 0; i < cars.length; i++){
+    //     dragArr.push(cars[i].Model)
+    // }

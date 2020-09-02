@@ -49,3 +49,24 @@ td, th{
   color: red;
   border: 1px solid red
 }
+
+#divAddCarId{
+  display: none;
+  width:100%;
+  overflow:hidden;
+
+}
+
+#tableDiv{
+  width:100%;
+  overflow:hidden;
+  margin: 0 auto;
+}
+
+input {
+  padding: 30px;
+}
+
+form{
+  text-align: center;
+}

@@ -9,7 +9,9 @@ const carModel = [
 carModel.push(`ADD`)
 let body = document.getElementsByTagName(`body`)[0];
 let div = document.createElement(`div`)
+div.setAttribute(`id`, 'tableDiv')
 let divPagination = document.createElement(`div`);
+divPagination.setAttribute(`id`, `paginationDiv`)
 body.appendChild(div);
 body.appendChild(divPagination);
 let table = document.createElement(`table`);
@@ -26,10 +28,15 @@ function createTable(cars) {
 
     for (let i = 0; i < carModel.length; i++) {
         let th = document.createElement(`th`)
-        th.setAttribute(`draggable`, `true`)
-        th.setAttribute(`ondragover`, `onDragOver()`)
-        th.setAttribute(`ondrop`, `onDrop(event)`)
-        th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`)
+        if (i < carModel.length - 1) {
+            th.setAttribute(`draggable`, `true`)
+            th.setAttribute(`ondragover`, `onDragOver()`)
+            th.setAttribute(`ondrop`, `onDrop(event)`)
+            th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`)
+        } else {
+            th.setAttribute(`button`, `ADD`)
+            th.setAttribute(`onclick`, `createRow()`)
+        }
         th.innerText = (carModel[i]);
         title.appendChild(th);
     }
@@ -103,6 +110,26 @@ function deleteRows() {
     }
 }
 
+function addRows() {
+    let model = document.getElementById(`model`).value
+    let brand = document.getElementById(`brand`).value
+    let date = document.getElementById(`date`).value
+    let horsepower = document.getElementById(`horsepower`).value
+    let transmission = document.getElementById(`transmission`).value
+    let clas = document.getElementById(`clas`).value
+
+    newCar = {}
+    newCar.Model = model
+    newCar.Brand = brand
+    newCar.Date = date
+    newCar.Horsepower = horsepower
+    newCar.Transmission = transmission
+    newCar.Class = clas
+    table.innerHTML = ``
+    car.push(newCar)
+    createTable(car)
+}
+
 function onDragStart(index, event) {
     event.dataTransfer.setData(`index`, index);
 }
@@ -122,10 +149,18 @@ function onDrop() {
 }
 
 function changeArray(arr, arg1, arg2) {
-
-    //arr.splice(arg2, 0);
+    //arr.splice(arg2, 0, arg1);
     arr[arg1] = arr.splice(arg2, 1, arr[arg1])[0];
     console.log(arr)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))
+}
+
+function createRow() {
+    let form = document.getElementById(`divAddCarId`)
+    if (form.style.display === `block`) {
+        form.style.display = `none`;
+    } else {
+        form.style.display = `block`;
+    }
 }

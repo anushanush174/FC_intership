@@ -122,9 +122,9 @@ function onDrop() {
 }
 
 function changeArray(arr, arg1, arg2) {
-    
-    arr.splice(arg2, 0);
-   // arr[arg1] = arr.splice(arg2, 1, arr[arg1])[0];
+
+    //arr.splice(arg2, 0);
+    arr[arg1] = arr.splice(arg2, 1, arr[arg1])[0];
     console.log(arr)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))

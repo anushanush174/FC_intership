@@ -111,23 +111,24 @@ function deleteRows() {
 }
 
 function addRows() {
-    let model = document.getElementById(`model`).value
-    let brand = document.getElementById(`brand`).value
-    let date = document.getElementById(`date`).value
-    let horsepower = document.getElementById(`horsepower`).value
-    let transmission = document.getElementById(`transmission`).value
-    let clas = document.getElementById(`clas`).value
+    let model = document.getElementById(`model`).value;
+    let brand = document.getElementById(`brand`).value;
+    let date = document.getElementById(`date`).value;
+    let horsepower = document.getElementById(`horsepower`).value;
+    let transmission = document.getElementById(`transmission`).value;
+    let clas = document.getElementById(`clas`).value;
 
-    newCar = {}
+    let newCar = {}
     newCar.Model = model
     newCar.Brand = brand
     newCar.Date = date
     newCar.Horsepower = horsepower
     newCar.Transmission = transmission
     newCar.Class = clas
+    
+    car.unshift(newCar)
     table.innerHTML = ``
-    car.push(newCar)
-    createTable(car)
+    createTable(car.slice(0, notesOnPage))
 }
 
 function onDragStart(index, event) {
@@ -150,7 +151,7 @@ function onDrop() {
 
 function changeArray(arr, arg1, arg2) {
     //arr.splice(arg2, 0, arg1);
-    arr[arg1] = arr.splice(arg2, 1, arr[arg1])[0];
+    //arr[arg1] = arr.splice(arg2, 1, arr[arg1])[0];
     console.log(arr)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))

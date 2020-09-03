@@ -6,18 +6,19 @@ const carModel = [
     `Transmission`,
     `Class`,
 ];
-carModel.push(`ADD`)
+carModel.push(`ADD`);
+carModel.push(`Edit`);
 let body = document.getElementsByTagName(`body`)[0];
-let div = document.createElement(`div`)
-div.setAttribute(`id`, 'tableDiv')
+let div = document.createElement(`div`);
+div.setAttribute(`id`, 'tableDiv');
 let divPagination = document.createElement(`div`);
-divPagination.setAttribute(`id`, `paginationDiv`)
+divPagination.setAttribute(`id`, `paginationDiv`);
 body.appendChild(div);
 body.appendChild(divPagination);
 let table = document.createElement(`table`);
-table.setAttribute(`id`, `table`)
+table.setAttribute(`id`, `table`);
 const notesOnPage = 10;
-let car = JSON.parse(localStorage.getItem(`carList`))
+let car = JSON.parse(localStorage.getItem(`carList`));
 let ul;
 
 createTable(car.slice(0, notesOnPage));
@@ -27,15 +28,15 @@ function createTable(cars) {
     let title = document.createElement(`tr`)
 
     for (let i = 0; i < carModel.length; i++) {
-        let th = document.createElement(`th`)
-        if (i < carModel.length - 1) {
-            th.setAttribute(`draggable`, `true`)
-            th.setAttribute(`ondragover`, `onDragOver()`)
-            th.setAttribute(`ondrop`, `onDrop(event)`)
-            th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`)
-        } else {
-            th.setAttribute(`button`, `ADD`)
-            th.setAttribute(`onclick`, `createRow()`)
+        let th = document.createElement(`th`);
+        if (i < carModel.length - 2) {
+            th.setAttribute(`draggable`, `true`);
+            th.setAttribute(`ondragover`, `onDragOver()`);
+            th.setAttribute(`ondrop`, `onDrop(event)`);
+            th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`);
+        } else if (i < carModel.length - 1) {
+            th.setAttribute(`button`, `ADD`);
+            th.setAttribute(`onclick`, `createRow()`);
         }
         th.innerText = (carModel[i]);
         title.appendChild(th);
@@ -45,14 +46,22 @@ function createTable(cars) {
 
     for (let i = 0; i < cars.length; i++) {
         let tr = document.createElement(`tr`);
-        for (let j = 0; j < carModel.length; j++) {
+        for (let j = 0; j <= carModel.length - 1; j++) {
+
             let td = document.createElement(`td`);
-            td.setAttribute(`name`, `td${j}`);
+
             cars[i].ADD = `Delete`;
+            cars[i].Edit = `edit`;
 
             td.innerText = cars[i][carModel[j]];
 
             tr.appendChild(td)
+
+            if(j === carModel.length - 1){
+                td.addEventListener(`click`, function(){
+                    editRows(car[i], i);
+                })
+            }
         }
         table.appendChild(tr)
     }
@@ -61,6 +70,17 @@ function createTable(cars) {
     divPagination.innerHTML = ``
     createPagination();
     deleteRows()
+
+    for (let i = 1; i < table.rows.length; i++) {
+        table.rows[i].cells[carModel.length - 1].onclick = function () {
+            let editForm = document.getElementById(`formEditCarID`)
+            if (editForm.style.display === `block`) {
+                editForm.style.display = `none`;
+            } else {
+                editForm.style.display = `block`;
+            }
+        }
+    }
 }
 
 function createPagination() {
@@ -99,7 +119,7 @@ function createPagination() {
 
 function deleteRows() {
     for (let i = 1; i < table.rows.length; i++) {
-        table.rows[i].cells[carModel.length - 1].onclick = function () {
+        table.rows[i].cells[carModel.length - 2].onclick = function () {
             let question = confirm(`Do you want to delete this row?`);
             if (question === true) {
                 let index = this.parentNode.rowIndex;
@@ -129,7 +149,7 @@ function addRows() {
     car.unshift(newCar)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))
-    document.getElementById(`divAddCarId`).style.display = `none`
+    document.getElementById(`formAddCarID`).style.display = `none`
 
     model.value = ``
     brand.value = ``
@@ -149,10 +169,10 @@ function onDragOver() {
 
 function onDrop(event) {
     let data = event.dataTransfer.getData(`index`)
-    changeArray(carModel, data, carModel.indexOf(event.target.innerHTML))
+    dragAndDropArray(carModel, data, carModel.indexOf(event.target.innerHTML))
 }
 
-function changeArray(arr, arg1, arg2) {
+function dragAndDropArray(arr, arg1, arg2) {
     let del = arr.splice(arg1, 1).toString();
     arr.splice(arg2, 0, del)
     table.innerHTML = ``
@@ -160,10 +180,36 @@ function changeArray(arr, arg1, arg2) {
 }
 
 function createRow() {
-    let form = document.getElementById(`divAddCarId`)
+    let form = document.getElementById(`formAddCarID`)
     if (form.style.display === `block`) {
         form.style.display = `none`;
     } else {
         form.style.display = `block`;
     }
+}
+
+// console.log(car[buttonIndexForEdit])
+
+// console.log(car.buttonIndexForEdit.Model)
+
+
+
+function editRows (data, i) {
+    console.log(data)
+    let model = document.getElementById(`modelEdit`)
+    let brand = document.getElementById(`brandEdit`)
+    let date = document.getElementById(`dateEdit`)
+    let horsepower = document.getElementById(`horsepowerEdit`)
+    let transmission = document.getElementById(`transmissionEdit`)
+    let clas = document.getElementById(`clasEdit`)
+
+    model.value = data.Model
+    brand.value = data.Brand
+    date.value  = data.Date
+    horsepower.value = data.Horsepower
+    transmission.value = data.Transmission
+    clas.value = data.Class
+
+    car[i].model
+
 }

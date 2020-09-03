@@ -50,11 +50,16 @@ td, th{
   border: 1px solid red
 }
 
-#divAddCarId{
+#formAddCarID{
   display: none;
   width:100%;
   overflow:hidden;
+}
 
+#formEditCarID{
+  display: none;
+  width:100%;
+  overflow:hidden;
 }
 
 #tableDiv{

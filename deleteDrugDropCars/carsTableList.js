@@ -31,7 +31,7 @@ function createTable(cars) {
         if (i < carModel.length - 1) {
             th.setAttribute(`draggable`, `true`)
             th.setAttribute(`ondragover`, `onDragOver()`)
-            th.setAttribute(`ondrop`, `onDrop()`)
+            th.setAttribute(`ondrop`, `onDrop(event)`)
             th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`)
         } else {
             th.setAttribute(`button`, `ADD`)
@@ -111,24 +111,32 @@ function deleteRows() {
 }
 
 function addRows() {
-    let model = document.getElementById(`model`).value;
-    let brand = document.getElementById(`brand`).value;
-    let date = document.getElementById(`date`).value;
-    let horsepower = document.getElementById(`horsepower`).value;
-    let transmission = document.getElementById(`transmission`).value;
-    let clas = document.getElementById(`clas`).value;
+    let model = document.getElementById(`model`);
+    let brand = document.getElementById(`brand`);
+    let date = document.getElementById(`date`);
+    let horsepower = document.getElementById(`horsepower`);
+    let transmission = document.getElementById(`transmission`);
+    let clas = document.getElementById(`clas`);
 
     let newCar = {}
-    newCar.Model = model
-    newCar.Brand = brand
-    newCar.Date = date
-    newCar.Horsepower = horsepower
-    newCar.Transmission = transmission
-    newCar.Class = clas
-    
+    newCar.Model = model.value
+    newCar.Brand = brand.value
+    newCar.Date = date.value
+    newCar.Horsepower = horsepower.value
+    newCar.Transmission = transmission.value
+    newCar.Class = clas.value
+
     car.unshift(newCar)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))
+    document.getElementById(`divAddCarId`).style.display = `none`
+
+    model.value = ``
+    brand.value = ``
+    date.value = ``
+    horsepower.value = ``
+    transmission.value = ``
+    clas.value = ``
 }
 
 function onDragStart(index, event) {
@@ -139,20 +147,14 @@ function onDragOver() {
     event.preventDefault();
 }
 
-function onDrop() {
+function onDrop(event) {
     let data = event.dataTransfer.getData(`index`)
-
-    console.log(data)
-    console.log(carModel.indexOf(event.target.innerHTML))
-
-    carModel.indexOf(event.target.innerHTML[fromIndex = 0])
     changeArray(carModel, data, carModel.indexOf(event.target.innerHTML))
 }
 
 function changeArray(arr, arg1, arg2) {
-    let d = arr.splice(arg1, 1);
-    arr.splice(arg2, 0 , d)
-    console.log(arr)
+    let del = arr.splice(arg1, 1).toString();
+    arr.splice(arg2, 0, del)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))
 }

@@ -31,7 +31,7 @@ function createTable(cars) {
         if (i < carModel.length - 1) {
             th.setAttribute(`draggable`, `true`)
             th.setAttribute(`ondragover`, `onDragOver()`)
-            th.setAttribute(`ondrop`, `onDrop(event)`)
+            th.setAttribute(`ondrop`, `onDrop()`)
             th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`)
         } else {
             th.setAttribute(`button`, `ADD`)
@@ -150,8 +150,8 @@ function onDrop() {
 }
 
 function changeArray(arr, arg1, arg2) {
-    //arr.splice(arg2, 0, arg1);
-    //arr[arg1] = arr.splice(arg2, 1, arr[arg1])[0];
+    let d = arr.splice(arg1, 1);
+    arr.splice(arg2, 0 , d)
     console.log(arr)
     table.innerHTML = ``
     createTable(car.slice(0, notesOnPage))

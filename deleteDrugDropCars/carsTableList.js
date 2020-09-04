@@ -20,9 +20,17 @@ table.setAttribute(`id`, `table`);
 const notesOnPage = 10;
 let car = JSON.parse(localStorage.getItem(`carList`));
 let ul;
-
+let index;
+let currentPage = 0;
 createTable(car.slice(0, notesOnPage));
 deleteRows();
+
+let model;
+let brand;
+let date;
+let horsepower;
+let transmission;
+let clas;
 
 function createTable(cars) {
     let title = document.createElement(`tr`)
@@ -55,11 +63,12 @@ function createTable(cars) {
 
             td.innerText = cars[i][carModel[j]];
 
-            tr.appendChild(td)
-
+            tr.appendChild(td);
             if(j === carModel.length - 1){
+                const y = i
+                console.log(i)
                 td.addEventListener(`click`, function(){
-                    editRows(car[i], i);
+                    editRows(car[y + currentPage * 10], i);
                 })
             }
         }
@@ -69,11 +78,11 @@ function createTable(cars) {
 
     divPagination.innerHTML = ``
     createPagination();
-    deleteRows()
+    deleteRows();
 
     for (let i = 1; i < table.rows.length; i++) {
         table.rows[i].cells[carModel.length - 1].onclick = function () {
-            let editForm = document.getElementById(`formEditCarID`)
+            let editForm = document.getElementById(`formEditCarID`);
             if (editForm.style.display === `block`) {
                 editForm.style.display = `none`;
             } else {
@@ -84,32 +93,35 @@ function createTable(cars) {
 }
 
 function createPagination() {
-    let amountPages = Math.ceil(car.length / notesOnPage)
+    let amountPages = Math.ceil(car.length / notesOnPage);
 
-    let ul = document.createElement(`ul`)
-    ul.setAttribute(`id`, `pagination`)
+    let ul = document.createElement(`ul`);
+    ul.setAttribute(`id`, `pagination`);
 
-    let items = []
+    let items = [];
     for (let i = 1; i <= amountPages; i++) {
-        let li = document.createElement(`li`)
+        let li = document.createElement(`li`);
         li.innerHTML = i;
-        ul.appendChild(li)
-        items.push(li)
+    
+        ul.appendChild(li);
+        li.setAttribute(`data-order`, i - 1)
+        items.push(li);
     }
 
     for (let item of items) {
-        item.addEventListener(`click`, function () {
-            let active = document.querySelector(`#pagination li.active`)
+        item.addEventListener(`click`, function ({currentTarget:{dataset:{order}}}) {
+            currentPage = +order;
+            let active = document.querySelector(`#pagination li.active`);
             if (active) {
-                active.classList.remove(`active`)
+                active.classList.remove(`active`);
             }
-            this.classList.add(`active`)
+            this.classList.add(`active`);
 
-            let pageNum = +this.innerHTML
+            let pageNum = +this.innerHTML;
 
             let start = (pageNum - 1) * notesOnPage;
             let end = start + notesOnPage;
-            let notes = car.slice(start, end)
+            let notes = car.slice(start, end);
             table.innerHTML = ``
             createTable(notes);
         })
@@ -138,25 +150,25 @@ function addRows() {
     let transmission = document.getElementById(`transmission`);
     let clas = document.getElementById(`clas`);
 
-    let newCar = {}
-    newCar.Model = model.value
-    newCar.Brand = brand.value
-    newCar.Date = date.value
-    newCar.Horsepower = horsepower.value
-    newCar.Transmission = transmission.value
-    newCar.Class = clas.value
+    let newCar = {};
+    newCar.Model = model.value;
+    newCar.Brand = brand.value;
+    newCar.Date = date.value;
+    newCar.Horsepower = horsepower.value;
+    newCar.Transmission = transmission.value;
+    newCar.Class = clas.value;
 
-    car.unshift(newCar)
-    table.innerHTML = ``
-    createTable(car.slice(0, notesOnPage))
-    document.getElementById(`formAddCarID`).style.display = `none`
+    car.unshift(newCar);
+    table.innerHTML = ``;
+    createTable(car.slice(0, notesOnPage));
+    document.getElementById(`formAddCarID`).style.display = `none`;
 
-    model.value = ``
-    brand.value = ``
-    date.value = ``
-    horsepower.value = ``
-    transmission.value = ``
-    clas.value = ``
+    model.value = ``;
+    brand.value = ``;
+    date.value = ``;
+    horsepower.value = ``;
+    transmission.value = ``;
+    clas.value = ``;
 }
 
 function onDragStart(index, event) {
@@ -168,19 +180,19 @@ function onDragOver() {
 }
 
 function onDrop(event) {
-    let data = event.dataTransfer.getData(`index`)
-    dragAndDropArray(carModel, data, carModel.indexOf(event.target.innerHTML))
+    let data = event.dataTransfer.getData(`index`);
+    dragAndDropArray(carModel, data, carModel.indexOf(event.target.innerHTML));
 }
 
 function dragAndDropArray(arr, arg1, arg2) {
     let del = arr.splice(arg1, 1).toString();
-    arr.splice(arg2, 0, del)
-    table.innerHTML = ``
-    createTable(car.slice(0, notesOnPage))
+    arr.splice(arg2, 0, del);
+    table.innerHTML = ``;
+    createTable(car.slice(0, notesOnPage));
 }
 
 function createRow() {
-    let form = document.getElementById(`formAddCarID`)
+    let form = document.getElementById(`formAddCarID`);
     if (form.style.display === `block`) {
         form.style.display = `none`;
     } else {
@@ -188,28 +200,36 @@ function createRow() {
     }
 }
 
-// console.log(car[buttonIndexForEdit])
-
-// console.log(car.buttonIndexForEdit.Model)
-
-
-
 function editRows (data, i) {
-    console.log(data)
-    let model = document.getElementById(`modelEdit`)
-    let brand = document.getElementById(`brandEdit`)
-    let date = document.getElementById(`dateEdit`)
-    let horsepower = document.getElementById(`horsepowerEdit`)
-    let transmission = document.getElementById(`transmissionEdit`)
-    let clas = document.getElementById(`clasEdit`)
 
-    model.value = data.Model
-    brand.value = data.Brand
-    date.value  = data.Date
-    horsepower.value = data.Horsepower
-    transmission.value = data.Transmission
-    clas.value = data.Class
+    index = i + (currentPage * notesOnPage);
+    model = document.getElementById(`modelEdit`);
+    brand = document.getElementById(`brandEdit`);
+    date = document.getElementById(`dateEdit`);
+    horsepower = document.getElementById(`horsepowerEdit`);
+    transmission = document.getElementById(`transmissionEdit`);
+    clas = document.getElementById(`clasEdit`);
 
-    car[i].model
+    model.value = data.Model;
+    brand.value = data.Brand;
+    date.value  = data.Date;
+    horsepower.value = data.Horsepower;
+    transmission.value = data.Transmission;
+    clas.value = data.Class;
+}
 
+function saveEditedValues(){
+    let editedModel = {
+        Model: model.value,
+        Brand: brand.value,
+        Date: date.value,
+        Horsepower: horsepower.value,
+        Transmission: transmission.value,
+        Class: clas.value,
+    };
+    
+    car[index] = editedModel;
+    table.innerHTML = ``;
+    createTable(car.slice(currentPage * notesOnPage, currentPage * notesOnPage + notesOnPage));
+    document.getElementById(`formEditCarID`).style.display = `none`;
 }

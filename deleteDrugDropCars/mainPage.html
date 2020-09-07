@@ -4,15 +4,19 @@
     </head>
     <body>
         <div id="left">
-        <input type= "button" value="Car List" onclick="onclickToHomePaje()"></input>
+        <input type= "button" value="Car List" onclick="onclickToHomePage()"></input>
             <br>
-            <input type= "button" value="Add Car"></input>
+            <input type="button" value="Add Car" onclick = "function toAddCarPage()" ></input>
         </div>
         <div id="right"></div>
 
         <script>
-            function onclickToHomePaje(){
+            function onclickToHomePage(){
                 location.href = `homePage.html`
+            }
+
+            function toAddCarPage(){
+                location.href = `addCarPage.html`
             }
         </script>
     </body>

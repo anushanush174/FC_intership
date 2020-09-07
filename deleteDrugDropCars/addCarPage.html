@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="pageStyle.css">
+</head>
+
+<body>
+    <script src="./cars.js"></script>
+    <!-- <script src="./carsTableList.js"></script> -->
+    <div>
+        <form id = "formAddCar">
+            <input type="text" id ="model" placeholder="Model" value=""></input>
+            <input type="text" id ="brand"placeholder="Brand" value=""></input>
+            <input type="number" id ="date"placeholder="Date" value=""></input>
+            <br>
+            <input type="number" id ="horsepower"placeholder="Horsepower" value=""></input>
+            <input type="text" id ="transmission"placeholder="Transmission" value=""></input>
+            <input type="text" id ="clas"placeholder="Class" value=""></input>
+            <br>
+            <input type="button" value="CREATE" onclick="addRows()"></input>
+        </form>
+    </div>
+    <script>
+
+    function addRows() {
+        let model = document.getElementById(`model`);
+        let brand = document.getElementById(`brand`);
+        let date = document.getElementById(`date`);
+        let horsepower = document.getElementById(`horsepower`);
+        let transmission = document.getElementById(`transmission`);
+        let clas = document.getElementById(`clas`);
+
+        let newCar = {};
+        newCar.Model = model.value;
+        newCar.Brand = brand.value;
+        newCar.Date = date.value;
+        newCar.Horsepower = horsepower.value;
+        newCar.Transmission = transmission.value;
+        newCar.Class = clas.value;
+
+        car.unshift(newCar);
+        table.innerHTML = ``;
+        createTable(car.slice(0, notesOnPage));
+        document.getElementById(`formAddCarID`).style.display = `none`;
+
+        model.value = ``;
+        brand.value = ``;
+        date.value = ``;
+        horsepower.value = ``;
+        transmission.value = ``;
+        clas.value = ``;
+    }
+
+    // function createRow() {
+    //     let form = document.getElementById(`formAddCar`);
+    //     if (form.style.display === `block`) {
+    //         form.style.display = `none`;
+    //     } else {
+    //         form.style.display = `block`;
+    //     }
+    // }
+    </script>
+</body>
+
+</html>

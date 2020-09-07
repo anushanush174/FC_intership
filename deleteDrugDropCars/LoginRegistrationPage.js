@@ -27,16 +27,16 @@ function userInfoToLocalStorage(){
         users = [currentUser];
     }
 
-    localStorage.setItem(`curUser`, JSON.stringify(users))
+    localStorage.setItem(`curUser`, JSON.stringify(users));
 
-    alert(`Successfully Registrated`)
+    location.href = `mainPage.html`;
 }
 
 function registerButtonClick(){
-    const userName = document.getElementById(`registerName`).value
-    const userEmail= document.getElementById(`email`).value
-    const password = document.getElementById(`registerPassword`).value
-    const rePassword = document.getElementById(`confirmPassw`).value
+    const userName = document.getElementById(`registerName`).value;
+    const userEmail= document.getElementById(`email`).value;
+    const password = document.getElementById(`registerPassword`).value;
+    const rePassword = document.getElementById(`confirmPassw`).value;
 
     if(userName.length > 0 && userEmail.length > 0){
         if(password.length < passwordLength || rePassword.length < passwordLength ){
@@ -48,19 +48,19 @@ function registerButtonClick(){
                 let users = JSON.parse(localStorage.getItem(`curUser`));
 
                 if(users){
-                    const emailValue = users.find(x => x.email === userEmail)
+                    const emailValue = users.find(x => x.email === userEmail);
                     if(emailValue !== undefined) {
-                        alert(`The user with such Email already exists`)
+                        alert(`The user with such Email already exists`);
                     }else{
-                        userInfoToLocalStorage()
+                        userInfoToLocalStorage();
                     }
                 }else{
-                    userInfoToLocalStorage()
+                    userInfoToLocalStorage();
                 }
             }
         }
     }else{
-        alert(`All Fields are Required`)
+        alert(`All Fields are Required`);
     }
 }
 
@@ -70,17 +70,17 @@ function loginButtonClick(){
     const logPass = document.getElementById(`loginPasswprd`).value;
 
     if(logName == `` || (logPass.length < passwordLength)){
-        alert(`Fields are Incorrect`)
+        alert(`Fields are Incorrect`);
     }else{
         let users = JSON.parse(localStorage.getItem(`curUser`));
         if(users){
             if((users.find(x => x.name === logName) || users.find(x => x.email === logName)) && users.find(x => x.password === logPass)){
-                location.href = `mainPage.html`
+                location.href = `mainPage.html`;
             }else{
-                alert(`Wrong Password or UserName`)
+                alert(`Wrong Password or UserName`);
             }
         }else{
-            alert(`please Register`)
+            alert(`please Register`);
         } 
     }
 }

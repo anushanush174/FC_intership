@@ -44,7 +44,6 @@ function createTable(cars) {
             th.setAttribute(`ondrop`, `onDrop(event)`);
             th.setAttribute(`ondragstart`, `onDragStart(${i}, event)`);
         } else if (i < carModel.length - 1) {
-            th.setAttribute(`button`, `ADD`);
             th.setAttribute(`onclick`, `createRow()`);
         }
         th.innerText = (carModel[i]);
@@ -67,7 +66,7 @@ function createTable(cars) {
  
             if (j === carModel.length - 1) {
                 td.addEventListener(`click`, function () {
-                    editRows(car[pageStart + i], pageStart + i);
+                    editRows(cars[pageStart + i], pageStart + i);
                 })
             }
         }
@@ -132,11 +131,11 @@ function deleteRows() {
             if (question === true) {
                 let index = this.parentNode.rowIndex;
                 table.deleteRow(index);
-                let deletedCarList = carList.splice(index, 1);
+                car.splice(index - 1, 1);
  
-                localStorage.setItem("List", JSON.stringify(deletedCarList));
-                let newList = JSON.parse(localStorage.getItem(`List`));
-                createTable(newList);
+                localStorage.setItem("carList", JSON.stringify(car));
+                // table.innerHTML = ``;
+                // createTable(car);
             }
         }
     }
@@ -162,7 +161,7 @@ function addRows() {
     car.unshift(newCar);
     table.innerHTML = ``;
     createTable(car.slice(0, notesOnPage));
-    document.getElementById(`formAddCarID`).style.display = `none`;
+    document.getElementById(`formAddCar`).style.display = `none`;
  
     model.value = ``;
     brand.value = ``;
@@ -193,15 +192,16 @@ function dragAndDropArray(arr, arg1, arg2) {
 }
  
 function createRow() {
-    let form = document.getElementById(`formAddCarID`);
-    if (form.style.display === `block`) {
-        form.style.display = `none`;
-    } else {
+    let form = document.getElementById(`formAddCar`);
+    if (form.style.display === `none`) {
         form.style.display = `block`;
+    } else {
+        form.style.display = `none`;
     }
 }
  
 function editRows(data, position) {
+    console.log(data)
     model = document.getElementById(`modelEdit`);
     brand = document.getElementById(`brandEdit`);
     date = document.getElementById(`dateEdit`);
